@@ -12,7 +12,9 @@ module.exports = function(grunt) {
         concat: {
             options: {
                 // define a string to put between each file in the concatenated output
-                separator: '\n'
+                separator: '\n',
+                banner: '(function ($, window, undefined) {\r\n    /*jshint validthis: true */\r\n    "use strict";\r\n\r\n',
+                footer: '\r\n})(jQuery, window);'
             },
             dist: {
                 // the files to concatenate

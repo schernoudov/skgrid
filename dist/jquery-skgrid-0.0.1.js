@@ -1,3 +1,7 @@
+(function ($, window, undefined) {
+    /*jshint validthis: true */
+    "use strict";
+
 var namespace = ".sk.jquery.skgrid";
 var SKGrid = function(element, options) {
 	this.element = $(element);
@@ -33,3 +37,4 @@ $.fn.skgrid = function(option) {
 };
 
 $.fn.skgrid.Constructor = SKGrid;
+})(jQuery, window);

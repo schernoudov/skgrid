@@ -3,18 +3,17 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>jQuery Bootgrid Demo</title>
-        <link href="../dist/css/bootstrap.css" rel="stylesheet" />
-        <link href="../dist/jquery.skgrid.css" rel="stylesheet" />
+        <link href="css/bootstrap.css" rel="stylesheet" />
 		<script src="../lib/jquery-1.11.1.min.js"></script>
-		<script src="../src/jquery.skgrid.js"></script>
+		<script src="../dist/jquery-skgrid-0.0.1.js"></script>
         <style>
         </style>
     </head>
     <script>
         $(document)
                 .ready( function() {
-                    $('test-table').skgrid();
-                });
+                            $('test-table').skgrid({});
+                        });
     </script>
 	<body>
 	<table id="test-table" class="table">
