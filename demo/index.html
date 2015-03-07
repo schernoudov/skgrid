@@ -3,21 +3,28 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>jQuery Bootgrid Demo</title>
-        <link href="css/bootstrap.css" rel="stylesheet" />
-        <link href="../dist/jquery.sktable.css" rel="stylesheet" />
-        <script src="js/modernizr-2.8.1.js"></script>
+        <link href="../dist/css/bootstrap.css" rel="stylesheet" />
+        <link href="../dist/jquery.skgrid.css" rel="stylesheet" />
+		<script src="../lib/jquery-1.11.1.min.js"></script>
+		<script src="../src/jquery.skgrid.js"></script>
         <style>
-            @-webkit-viewport { width: device-width; }
-            @-moz-viewport { width: device-width; }
-            @-ms-viewport { width: device-width; }
-            @-o-viewport { width: device-width; }
-            @viewport { width: device-width; }
-            body { padding-top: 70px; }
-            
-            .column .text { color: #f00 !important; }
-            .cell { font-weight: bold; }
         </style>
     </head>
+    <script>
+        $(document)
+                .ready( function() {
+                    $('test-table').skgrid();
+                });
+    </script>
 	<body>
+	<table id="test-table" class="table">
+		<thead>
+			<tr>
+				<th>1</th>
+                <th>2</th>
+                <th>3</th>
+            </tr>
+		</thead>
+	</table>
 	</body>
 </html>

@@ -1,0 +1,1 @@
+var namespace = ".sk.jquery.skgrid";
