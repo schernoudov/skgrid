@@ -5,10 +5,23 @@ var SKGrid = function(element, options) {
 };
 
 SKGrid.defaults = {
+    requestType: "POST",
+    url: "",
+    renderHeader: false,
+    renderLabels: false
 };
 
 SKGrid.prototype.appendRows = function(rows) {
 };
 
-SKGrid.prototype.joinLabels = function(labels) {
+SKGrid.prototype.loadData = function() {
+    $.ajax({
+        url: this.options.url,
+        type: this.options.requestType,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success:    function (data) {
+                        renderTable.call(this, data);
+                    }
+    });
 };
