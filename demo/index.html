@@ -8,10 +8,8 @@
     <script src="../dist/jquery-skgrid-0.0.1.js"></script>
     <style>
         .black {
-            background: rgba(0, 0, 0, 0.7);
         }
         .grey {
-            background: rgba(121, 121, 121, 0.7);
         }
         .blocked {
             display: block;
@@ -20,9 +18,9 @@
             display: inline-block;
             vertical-align: top;
             position: relative;
+            float: left;
         }
         .table-wrapper {
-             display: inline-block;
              overflow-x: scroll;
          }
         .table-label {
@@ -40,16 +38,19 @@
                         return i % 2 == 0 ? "black" : "grey";
                     },
                     labels: [
-                                "aaa",
-                                "bbb",
-                                "ccc"
+                                "aaaaaaaaaaaaaaaaaaa",
+                                "bbbbbbbbbbbbbbbbbbb",
+                                "ccccccccccccccccccc",
+                                "ddddddddddddddddddd",
+                                "eeeeeeeeeeeeeeeeeee"
                             ]
                 });
                 $('#test-table').skgrid("loadData");
             });
 </script>
 <body>
-    <table id="test-table" class="table">
+<div style="margin: 10px">
+    <table id="test-table" class="table table-condensed table-hover table-striped table-bordered">
         <thead>
         <tr>
             <th>id</th>
@@ -58,5 +59,6 @@
         </tr>
         </thead>
     </table>
+</div>
 </body>
 </html>
