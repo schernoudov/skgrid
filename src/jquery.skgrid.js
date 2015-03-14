@@ -11,6 +11,7 @@ SKGrid.defaults = {
     renderLabels: false,
     rowClassDeterminator: undefined,
     cellClassDeterminator: undefined,
+	labelClassDeterminator: undefined,
     labels: []
 };
 

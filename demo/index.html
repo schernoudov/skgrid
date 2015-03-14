@@ -7,23 +7,22 @@
     <script src="../lib/jquery-1.11.1.min.js"></script>
     <script src="../dist/jquery-skgrid-0.0.1.js"></script>
     <style>
-        .black {
-        }
-        .grey {
+        .nowrap {
+            white-space: nowrap;
         }
         .blocked {
             display: block;
         }
-        .label-wrapper {
+        .sktable-label-wrapper {
             display: inline-block;
             vertical-align: top;
             position: relative;
             float: left;
         }
-        .table-wrapper {
+        .sktable-table-wrapper {
              overflow-x: scroll;
          }
-        .table-label {
+        .sktable-label {
             margin: 0px;
         }
     </style>
@@ -35,15 +34,14 @@
                     url: "data.json",
                     type: "json",
                     rowClassDeterminator: function (i) {
-                        return i % 2 == 0 ? "black" : "grey";
+                        return "nowrap";
                     },
                     labels: [
-                                "aaaaaaaaaaaaaaaaaaa",
-                                "bbbbbbbbbbbbbbbbbbb",
-                                "ccccccccccccccccccc",
-                                "ddddddddddddddddddd",
-                                "eeeeeeeeeeeeeeeeeee"
-                            ]
+                                "id",
+                                "sender",
+                                "received"
+                            ],
+                    renderHeader: true
                 });
                 $('#test-table').skgrid("loadData");
             });
@@ -51,13 +49,6 @@
 <body>
 <div style="margin: 10px">
     <table id="test-table" class="table table-condensed table-hover table-striped table-bordered">
-        <thead>
-        <tr>
-            <th>id</th>
-            <th>sender</th>
-            <th>received</th>
-        </tr>
-        </thead>
     </table>
 </div>
 </body>
