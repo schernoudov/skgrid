@@ -13,18 +13,13 @@
         .blocked {
             display: block;
         }
-        .sktable-label-wrapper {
-            display: inline-block;
-            vertical-align: top;
-            position: relative;
-            float: left;
+        .skgrid-label-wrapper label:last-child {
+            border-bottom-color: #000099;
+            border-bottom-width: 1px;
         }
-        .sktable-table-wrapper {
-             overflow-x: scroll;
+        .skgrid-wrapper {
+            margin: 10px;
          }
-        .sktable-label {
-            margin: 0px;
-        }
     </style>
 </head>
 <script>
@@ -47,9 +42,7 @@
             });
 </script>
 <body>
-<div style="margin: 10px">
     <table id="test-table" class="table table-condensed table-hover table-striped table-bordered">
     </table>
-</div>
 </body>
 </html>

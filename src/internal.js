@@ -8,9 +8,10 @@ var renderTable = function(data) {
     if (data.headers && data.headers.length !== 0) {
         renderHeader.call(this, data.headers);
     }
-    renderColumns.call(this, data);
-    if (this.options.labels.length !== 0) {
-        renderLabels.call(this);
+    renderBody.call(this, data);
+    var labels = (data.labels === null) || (data.labels === undefined) ? this.options.labels : data.labels;
+    if (labels) {
+        renderLabels.call(this, labels);
     }
 };
 
@@ -26,34 +27,46 @@ var renderHeader = function(header) {
                         .appendTo(this.element));
 };
 
-var renderColumns = function(data) {
-    var self = this;
-    var tr;
-    var property;
-    var i;
+var renderBody = function(data) {
+    wrapTable.call(this, data);
     if (data.rows && data.rows.length !== 0) {
-        for (i = 0 ; i < data.rows.length ; i++) {
-            tr = $('<tr></tr>');
-            if (this.options.rowClassDeterminator) {
-                tr.addClass(this.options.rowClassDeterminator(i));
-            }
-            for (property in data.rows[i]) {
-                renderCell.call(self, tr, property, data.rows[i][property]);
-            }
-            $(tr).appendTo(this.element);
-        }
-        this.element.wrap("<div style='overflow-x: auto'></div>");
+        renderRows.call(this, data);
     } else if (data.columns && data.columns.length !== 0) {
-        for(property in data.columns[0]) {
-            tr = $('<tr></tr>');
-            if (this.options.rowClassDeterminator) {
-                tr.addClass(this.options.rowClassDeterminator(i));
-            }
-            for (i in data.columns) {
-                renderCell.call(self, tr, property, data.columns[i][property]);
-            }
-            $(tr).appendTo(this.element);
+        renderColumns.call(this, data);
+    }
+};
+
+var renderRows = function(data) {
+    for (var i = 0 ; i < data.rows.length ; i++) {
+        var tr = $('<tr></tr>');
+        if (this.options.rowClassDeterminator) {
+            tr.addClass(this.options.rowClassDeterminator(i));
         }
+        for (var property in data.rows[i]) {
+            renderCell.call(this, tr, property, data.rows[i][property]);
+        }
+        $(tr).appendTo(this.element);
+    }
+};
+
+var renderColumns = function(data) {
+    for(var property in data.columns[0]) {
+        var tr = $('<tr></tr>');
+        if (this.options.rowClassDeterminator) {
+            tr.addClass(this.options.rowClassDeterminator(i));
+        }
+        for (var i in data.columns) {
+            renderCell.call(this, tr, property, data.columns[i][property]);
+        }
+        $(tr).appendTo(this.element);
+    }
+};
+
+var wrapTable = function(data) {
+    this.element.wrap("<div class='skgrid-wrapper'></div>");
+    if (data.rows && data.rows.length !== 0) {
+        this.element.wrap("<div style='overflow-x: auto' class='skgrid-table-wrapper'></div>");
+    } else if (data.columns && data.columns.length !== 0) {
         this.element.wrap("<div style='overflow-x: scroll'></div>");
     }
 };
@@ -69,9 +82,8 @@ var renderCell = function(row, property, cellData) {
     }
 };
 
-var renderLabels = function() {
-    var labelHolder = $("<div class='sktable-label-wrapper'></div>");
-    var labels = this.options.labels;
+var renderLabels = function(labels) {
+    var labelHolder = $("<div class='skgrid-label-wrapper'></div>");
     for (var i in labels) {
         var label = $("<label style='display: block'></label>");
         label
@@ -83,9 +95,14 @@ var renderLabels = function() {
                                 .eq(i)
                                 .height();
         label.css('height', rowHeight);
-        label.addClass(this.options.labelClassDeterminator(i));
+        label.css('margin', '0px');
+		if (this.options.labelClassDeterminator) {
+			label.addClass(this.options.labelClassDeterminator(i));
+		}
         label.css("line-height", rowHeight + "px");
     }
     labelHolder.css('top', this.element.children('thead').height());
+    labelHolder.css('position', 'relative');
+    labelHolder.css('float', 'left');
     labelHolder.insertBefore(this.element.parent());
 };
