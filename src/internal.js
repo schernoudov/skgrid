@@ -89,11 +89,11 @@ var renderLabels = function(labels) {
         label
              .html(labels[i])
              .appendTo(labelHolder);
-        var rowHeight = this.element
+        var currentRow = this.element
                                 .children("tbody")
-                                .children()
-                                .eq(i)
-                                .height();
+                                    .children()
+                                        .eq(i);
+        var rowHeight = currentRow.height() - parseInt(this.element.css('border-top-width'));
         label.css('height', rowHeight);
         label.css('margin', '0px');
 		if (this.options.labelClassDeterminator) {
@@ -101,7 +101,7 @@ var renderLabels = function(labels) {
 		}
         label.css("line-height", rowHeight + "px");
     }
-    labelHolder.css('top', this.element.children('thead').height());
+    labelHolder.css('top', this.element.children('thead').height() + 1);
     labelHolder.css('position', 'relative');
     labelHolder.css('float', 'left');
     labelHolder.insertBefore(this.element.parent());
