@@ -54,25 +54,23 @@ var renderRows = function(data) {
 };
 
 var renderColumns = function(data) {
+	var columnIndex = 0;
     for(var property in data.columns[0]) {
         var tr = $('<tr></tr>');
         if (this.options.rowClassDeterminator) {
-            tr.addClass(this.options.rowClassDeterminator(i));
+            tr.addClass(this.options.rowClassDeterminator(columnIndex));
         }
         for (var i in data.columns) {
             renderCell.call(this, tr, property, data.columns[i][property]);
         }
         $(tr).appendTo(this.element);
+		columnIndex++;
     }
 };
 
 var wrapTable = function(data) {
     this.element.wrap("<div class='skgrid-wrapper'></div>");
-    if (data.rows && data.rows.length !== 0) {
-        this.element.wrap("<div style='overflow-x: auto' class='skgrid-table-wrapper'></div>");
-    } else if (data.columns && data.columns.length !== 0) {
-        this.element.wrap("<div style='overflow-x: scroll'></div>");
-    }
+    this.element.wrap("<div style='overflow-x: auto' class='skgrid-table-wrapper'></div>");
 };
 
 var renderCell = function(row, property, cellData) {
@@ -105,7 +103,7 @@ var renderLabels = function(labels) {
 		}
         label.css("line-height", rowHeight + "px");
     }
-    labelHolder.css('top', this.element.children('thead').height());
+    labelHolder.css('top', this.element.children('thead').height() + 1);
     labelHolder.css('position', 'relative');
     labelHolder.css('float', 'left');
     labelHolder.insertBefore(this.element.parent());
@@ -130,13 +128,14 @@ SKGrid.defaults = {
 SKGrid.prototype.appendRows = function(rows) {
 };
 
-SKGrid.prototype.loadData = function() {
+SKGrid.prototype.loadData = function(data) {
     var self = this;
     $.ajax({
         url: this.options.url,
         type: this.options.requestType,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
+		data: data,
         success:    function (data) {
                         renderTable.call(self, data);
                     }

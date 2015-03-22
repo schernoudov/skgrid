@@ -18,13 +18,14 @@ SKGrid.defaults = {
 SKGrid.prototype.appendRows = function(rows) {
 };
 
-SKGrid.prototype.loadData = function() {
+SKGrid.prototype.loadData = function(data) {
     var self = this;
     $.ajax({
         url: this.options.url,
         type: this.options.requestType,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
+		data: data,
         success:    function (data) {
                         renderTable.call(self, data);
                     }

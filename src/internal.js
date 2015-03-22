@@ -50,25 +50,23 @@ var renderRows = function(data) {
 };
 
 var renderColumns = function(data) {
+	var columnIndex = 0;
     for(var property in data.columns[0]) {
         var tr = $('<tr></tr>');
         if (this.options.rowClassDeterminator) {
-            tr.addClass(this.options.rowClassDeterminator(i));
+            tr.addClass(this.options.rowClassDeterminator(columnIndex));
         }
         for (var i in data.columns) {
             renderCell.call(this, tr, property, data.columns[i][property]);
         }
         $(tr).appendTo(this.element);
+		columnIndex++;
     }
 };
 
 var wrapTable = function(data) {
     this.element.wrap("<div class='skgrid-wrapper'></div>");
-    if (data.rows && data.rows.length !== 0) {
-        this.element.wrap("<div style='overflow-x: auto' class='skgrid-table-wrapper'></div>");
-    } else if (data.columns && data.columns.length !== 0) {
-        this.element.wrap("<div style='overflow-x: scroll'></div>");
-    }
+    this.element.wrap("<div style='overflow-x: auto' class='skgrid-table-wrapper'></div>");
 };
 
 var renderCell = function(row, property, cellData) {
