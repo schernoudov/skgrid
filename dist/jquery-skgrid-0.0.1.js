@@ -4,8 +4,15 @@
 
 var namespace = ".sk.jquery.skgrid";
 
-var init = function(options) {
+var initialized = false;
 
+var init = function(options) {
+    wrapTable.call(this);
+    wrapLabels.call(this);
+    this.initialized = true;
+    if (this.options.onInit) {
+        this.options.onInit.call(this);
+    }
 };
 
 var renderTable = function(data) {
@@ -16,6 +23,9 @@ var renderTable = function(data) {
     var labels = (data.labels === null) || (data.labels === undefined) ? this.options.labels : data.labels;
     if (labels) {
         renderLabels.call(this, labels);
+    }
+    if (this.options.onRender) {
+        this.options.onRender.call(this);
     }
 };
 
@@ -31,8 +41,11 @@ var renderHeader = function(header) {
                         .appendTo(this.element));
 };
 
+var removeHeader = function () {
+  this.element.children('thead').remove();
+};
+
 var renderBody = function(data) {
-    wrapTable.call(this, data);
     if (data.rows && data.rows.length !== 0) {
         renderRows.call(this, data);
     } else if (data.columns && data.columns.length !== 0) {
@@ -40,7 +53,12 @@ var renderBody = function(data) {
     }
 };
 
+var removeBody = function () {
+    this.element.children('tbody').remove();
+};
+
 var renderRows = function(data) {
+    var htmlString = "";
     for (var i = 0 ; i < data.rows.length ; i++) {
         var tr = $('<tr></tr>');
         if (this.options.rowClassDeterminator) {
@@ -49,12 +67,14 @@ var renderRows = function(data) {
         for (var property in data.rows[i]) {
             renderCell.call(this, tr, property, data.rows[i][property]);
         }
-        $(tr).appendTo(this.element);
+        htmlString += $(tr)[0].outerHTML;
     }
+    $(htmlString).appendTo(this.element);
 };
 
 var renderColumns = function(data) {
 	var columnIndex = 0;
+    var htmlString = "";
     for(var property in data.columns[0]) {
         var tr = $('<tr></tr>');
         if (this.options.rowClassDeterminator) {
@@ -63,14 +83,22 @@ var renderColumns = function(data) {
         for (var i in data.columns) {
             renderCell.call(this, tr, property, data.columns[i][property]);
         }
-        $(tr).appendTo(this.element);
+        htmlString += $(tr)[0].outerHTML;
 		columnIndex++;
     }
+    $(htmlString).appendTo(this.element);
 };
 
-var wrapTable = function(data) {
+var wrapTable = function() {
     this.element.wrap("<div class='skgrid-wrapper'></div>");
     this.element.wrap("<div style='overflow-x: auto' class='skgrid-table-wrapper'></div>");
+};
+
+var wrapLabels = function() {
+    this.labelHolder = $("<div class='skgrid-label-wrapper'></div>");
+    this.labelHolder.css('position', 'relative');
+    this.labelHolder.css('float', 'left');
+    this.labelHolder.insertBefore(this.element.parent());
 };
 
 var renderCell = function(row, property, cellData) {
@@ -85,12 +113,11 @@ var renderCell = function(row, property, cellData) {
 };
 
 var renderLabels = function(labels) {
-    var labelHolder = $("<div class='skgrid-label-wrapper'></div>");
+    var htmlString = "";
     for (var i in labels) {
         var label = $("<label style='display: block'></label>");
         label
-             .html(labels[i])
-             .appendTo(labelHolder);
+             .html(labels[i]);
         var currentRow = this.element
                                 .children("tbody")
                                     .children()
@@ -102,12 +129,18 @@ var renderLabels = function(labels) {
 			label.addClass(this.options.labelClassDeterminator(i));
 		}
         label.css("line-height", rowHeight + "px");
+        htmlString += label[0].outerHTML;
     }
-    labelHolder.css('top', this.element.children('thead').height() + 1);
-    labelHolder.css('position', 'relative');
-    labelHolder.css('float', 'left');
-    labelHolder.insertBefore(this.element.parent());
+    $(htmlString).appendTo(this.labelHolder);
+    this
+        .labelHolder
+            .css('top', this.element.children('thead').height() + 1);
 };
+
+var removeLabels = function() {
+    this.labelHolder.children('label').remove();
+};
+
 var SKGrid = function(element, options) {
 	this.element = $(element);
 	this.origin = this.element.clone();
@@ -140,6 +173,16 @@ SKGrid.prototype.loadData = function(data) {
                         renderTable.call(self, data);
                     }
     });
+};
+
+SKGrid.prototype.clear = function(clearLabels, clearHeader) {
+	if (clearLabels) {
+        removeLabels.call(this);
+	}
+	if (clearHeader) {
+		removeHeader.call(this);
+	}
+    removeBody.call(this);
 };
 $.fn.skgrid = function(option) {
     var args = Array.prototype.slice.call(arguments, 1);

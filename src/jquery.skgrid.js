@@ -1,3 +1,4 @@
+
 var SKGrid = function(element, options) {
 	this.element = $(element);
 	this.origin = this.element.clone();
@@ -30,4 +31,14 @@ SKGrid.prototype.loadData = function(data) {
                         renderTable.call(self, data);
                     }
     });
+};
+
+SKGrid.prototype.clear = function(clearLabels, clearHeader) {
+	if (clearLabels) {
+        removeLabels.call(this);
+	}
+	if (clearHeader) {
+		removeHeader.call(this);
+	}
+    removeBody.call(this);
 };
